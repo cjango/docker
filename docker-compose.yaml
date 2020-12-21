@@ -1,0 +1,84 @@
+version: '3.1'
+services:
+  nginx:
+    image: nginx:1.9.6
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/enable-php.conf:/etc/nginx/enable-php.conf:ro
+      - ./nginx/enable-php-pathinfo.conf:/etc/nginx/enable-php-pathinfo.conf:ro
+      - ./nginx/fastcgi.conf:/etc/nginx/fastcgi.conf:ro
+      - ./nginx/pathinfo.conf:/etc/nginx/pathinfo.conf:ro
+      - ./nginx/vhost.d:/etc/nginx/vhost.d:ro
+      - ./logs/nginx:/var/log/nginx
+      - ./wwwroot:/var/www
+    networks:
+      mynet:
+        ipv4_address: 172.95.27.10
+  php:
+    build:
+      context: ./php
+    container_name: php
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - ./php/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./logs/php:/var/log/php
+      - ./wwwroot:/var/www
+    networks:
+      mynet:
+        ipv4_address: 172.95.27.20
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - 3306:3306
+    volumes:
+      # 配置文件
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      mynet:
+        ipv4_address: 172.95.27.30
+  redis:
+    image: redis:6.0.9
+    container_name: redis
+    # command: redis-server --requirepass Anetadmin1
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      # 配置文件
+      - ./conf/redis.conf:/etc/redis/redis.conf
+      # 数据持久化存储的位置
+      - ./data/redis:/data
+    networks:
+      mynet:
+        ipv4_address: 172.95.27.40
+  mongodb:
+    image: mongo:4.4.2
+    container_name: mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Anetadmin1
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongodb:/data/db
+    networks:
+      mynet:
+        ipv4_address: 172.95.27.50
+networks:
+  mynet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.95.27.0/24

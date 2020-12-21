@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1cd75a1e-eaad-4dd3-ae89-ff76b4df92ae" name="文化厅-docker">
+        <fileTransfer rootFolder="/home/docker" accessType="SFTP" host="139.129.108.141" port="22" sshConfigId="9fc4a6ea-e2cb-4a14-a385-1c6f3d800f46" sshConfig="文化厅">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

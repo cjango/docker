@@ -1,0 +1,11 @@
+FROM php:7.4.13-fpm
+
+# 安装 comopser
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+COPY ./source.ali.list /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y libmagickwand-dev libmagickcore-dev \
+    && pecl install redis \
+    && pecl install imagick \
+    && pecl install mongodb
