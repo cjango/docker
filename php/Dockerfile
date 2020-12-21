@@ -8,4 +8,4 @@ COPY ./source.ali.list /etc/apt/sources.list
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
-    install-php-extensions redis mongodb imagick opcache
+    install-php-extensions redis mongodb gd2 imagick opcache
